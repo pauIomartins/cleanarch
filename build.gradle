@@ -1,0 +1,12 @@
+group 'com.paulorobertomartins.cleanarch'
+version '1.0-SNAPSHOT'
+
+allprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
+dependencies {
+}

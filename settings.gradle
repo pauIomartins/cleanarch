@@ -1,0 +1,5 @@
+rootProject.name = 'com.paulorobertomartins.cleanarch'
+include 'core-impl'
+include 'core'
+include 'web'
+include 'persistence-jdbc-impl'
