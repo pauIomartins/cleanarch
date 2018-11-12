@@ -1,12 +1,19 @@
 package com.paulorobertomartins.cleanarch.core.entities;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@RequiredArgsConstructor
+@Getter
+@Setter
 public class Stock {
 
     private Long id;
-    private Product product;
+    @NonNull
     private Address address;
+    @NonNull
+    private Product product;
+    @NonNull
     private Double quantity;
 }

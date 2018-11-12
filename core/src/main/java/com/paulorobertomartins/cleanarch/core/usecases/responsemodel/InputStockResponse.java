@@ -7,7 +7,7 @@ import lombok.Value;
 @Value
 public class InputStockResponse {
 
-    private final Long movementId;
+    private final Long stockId;
     private final String addressLabel;
     private final String productEan;
     private final Double quantity;
