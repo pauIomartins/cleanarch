@@ -3,11 +3,13 @@ package com.paulorobertomartins.cleanarch.infra.web.controller.payload;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.paulorobertomartins.cleanarch.core.usecases.requestmodel.InputStockRequest;
 
-public class CreateInputMovementPayload extends CreateMovementPayload<InputStockRequest> {
+import java.math.BigDecimal;
 
-    public CreateInputMovementPayload(@JsonProperty("address_to") String addressToLabel,
-                                      @JsonProperty("product_ean") String productEan,
-                                      @JsonProperty("quantity") Double quantity) {
+public class ExecuteInputMovementPayload extends ExecuteMovementPayload<InputStockRequest> {
+
+    public ExecuteInputMovementPayload(@JsonProperty("address_to") String addressToLabel,
+                                       @JsonProperty("product_ean") String productEan,
+                                       @JsonProperty("quantity") BigDecimal quantity) {
         super(null, addressToLabel, productEan, quantity);
     }
 

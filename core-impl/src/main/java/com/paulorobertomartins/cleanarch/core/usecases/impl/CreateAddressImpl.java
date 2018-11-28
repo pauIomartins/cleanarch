@@ -20,7 +20,7 @@ public class CreateAddressImpl implements CreateAddress {
 
     @Override
     public void execute(CreateAddressRequest request, Consumer<CreateAddressResponse> consumer) {
-        Address addressSaved = addressGateway.persist(new Address(request.getAddressLabel()));
+        final Address addressSaved = addressGateway.persist(new Address(request.getAddressLabel()));
         consumer.accept(CreateAddressResponse.builder()
                 .id(addressSaved.getId())
                 .label(addressSaved.getLabel())

@@ -20,8 +20,8 @@ import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 @Named
 public class InputStockImpl implements InputStock {
 
@@ -33,25 +33,24 @@ public class InputStockImpl implements InputStock {
     @Override
     public void execute(InputStockRequest request, Consumer<InputStockResponse> consumer) {
 
-        Address address = addressGateway.findByLabel(request.getAddressLabel())
+        final Address address = addressGateway.findByLabel(request.getAddressLabel())
                 .orElseThrow(InvalidAddressException::new);
 
-        Product product = productGateway.findByEan(request.getProductEan())
+        final Product product = productGateway.findByEan(request.getProductEan())
                 .orElseThrow(InvalidProductException::new);
 
-        Optional<Stock> stockOptional = stockGateway.findByAddressAndProduct(address, product);
+        final Optional<Stock> stockOptional = stockGateway.findByAddressAndProduct(address, product);
 
         Stock savedStock;
         if (stockOptional.isPresent()) {
             Stock updateStock = stockOptional.get();
-            updateStock.setQuantity(updateStock.getQuantity() + request.getQuantity());
+            updateStock.incrementQuantity(request.getQuantity());
             savedStock = stockGateway.update(updateStock);
         } else {
             savedStock = stockGateway.create(new Stock(address, product, request.getQuantity()));
         }
 
-        Movement movement = movementGateway.create(Movement.newInputMovement(address, product, request.getQuantity()));
-        movementGateway.create(movement);
+        movementGateway.create(Movement.newInputMovement(address, product, request.getQuantity()));
 
         consumer.accept(InputStockResponse.builder()
                 .addressLabel(address.getLabel())

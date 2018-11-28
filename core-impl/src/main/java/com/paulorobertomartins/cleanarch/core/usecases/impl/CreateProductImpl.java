@@ -20,7 +20,7 @@ public class CreateProductImpl implements CreateProduct {
 
     @Override
     public void execute(CreateProductRequest request, Consumer<CreateProductResponse> consumer) {
-        Product ProductSaved = ProductGateway.persist(new Product(request.getDescription(), request.getEan()));
+        final Product ProductSaved = ProductGateway.persist(new Product(request.getDescription(), request.getEan()));
         consumer.accept(CreateProductResponse.builder()
                 .id(ProductSaved.getId())
                 .description(ProductSaved.getDescription())

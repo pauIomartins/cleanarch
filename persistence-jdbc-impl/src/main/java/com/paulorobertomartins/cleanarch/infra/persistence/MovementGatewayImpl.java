@@ -18,7 +18,7 @@ public class MovementGatewayImpl implements MovementGateway {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public Movement create(Movement movement) {
+    public Movement create(final Movement movement) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("movement").usingGeneratedKeyColumns("id");
 
@@ -35,7 +35,13 @@ public class MovementGatewayImpl implements MovementGateway {
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
-        movement.setId(key.longValue());
-        return movement;
+        return Movement.builder()
+                .id(key.longValue())
+                .addressFrom(movement.getAddressFrom())
+                .addressTo(movement.getAddressTo())
+                .product(movement.getProduct())
+                .quantity(movement.getQuantity())
+                .type(movement.getType())
+                .build();
     }
 }

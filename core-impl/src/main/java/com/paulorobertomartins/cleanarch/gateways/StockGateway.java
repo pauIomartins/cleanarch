@@ -13,4 +13,6 @@ public interface StockGateway {
     Stock update(final Stock stock);
 
     Optional<Stock> findByAddressAndProduct(final Address address, final Product product);
+
+    void remove(final Stock stock);
 }

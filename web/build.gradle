@@ -26,11 +26,9 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok:1.18.2'
 
-    // compile('org.springframework.boot:spring-boot-starter-data-jpa')
-
     compile project(':core')
-    compile project(':core-impl')
-    compile project(':persistence-jdbc-impl')
+    runtime project(':core-impl')
+    runtime project(':persistence-jdbc-impl')
 
     compile('org.springframework.boot:spring-boot-starter-web')
 

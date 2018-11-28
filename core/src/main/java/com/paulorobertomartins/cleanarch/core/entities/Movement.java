@@ -1,37 +1,63 @@
 package com.paulorobertomartins.cleanarch.core.entities;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.NonNull;
+import lombok.Value;
 
-@NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
+import java.math.BigDecimal;
+
+@Builder(toBuilder = true)
+@Value
 public class Movement {
 
-    private Long id;
-    private Address addressFrom;
-    private Address addressTo;
+    private final Long id;
+    private final Address addressFrom;
+    private final Address addressTo;
     @NonNull
-    private Product product;
+    private final Product product;
     @NonNull
-    private Double quantity;
+    private final BigDecimal quantity;
     @NonNull
-    private MovementType type;
+    private final MovementType type;
 
-    public Movement(Address addressTo, Product product, Double quantity, MovementType type) {
+    public Movement(Address addressTo, Product product, BigDecimal quantity, MovementType type) {
+        this.id = null;
+        this.addressFrom = null;
         this.addressTo = addressTo;
         this.product = product;
         this.quantity = quantity;
         this.type = type;
     }
 
-    public static Movement newInputMovement(Address addressTo, Product product, Double quantity) {
+    public Movement(Address addressFrom, Address addressTo, Product product, BigDecimal quantity, MovementType type) {
+        this.id = null;
+        this.addressFrom = addressFrom;
+        this.addressTo = addressTo;
+        this.product = product;
+        this.quantity = quantity;
+        this.type = type;
+    }
+
+    public Movement(Long id, Address addressFrom, Address addressTo, Product product, BigDecimal quantity, MovementType type) {
+        this.id = id;
+        this.addressFrom = addressFrom;
+        this.addressTo = addressTo;
+        this.product = product;
+        this.quantity = quantity;
+        this.type = type;
+    }
+
+    public static Movement newInputMovement(Address addressTo, Product product, BigDecimal quantity) {
         return new Movement(addressTo, product, quantity, MovementType.INPUT);
+    }
+
+    public static Movement newTransferMovement(Address addressFrom, Address addressTo, Product product, BigDecimal quantity) {
+        return new Movement(addressFrom, addressTo, product, quantity, MovementType.TRANSFER);
     }
 
     public enum MovementType {
         INPUT,
         OUTPUT,
-        TRANSFER;
+        TRANSFER
     }
 }

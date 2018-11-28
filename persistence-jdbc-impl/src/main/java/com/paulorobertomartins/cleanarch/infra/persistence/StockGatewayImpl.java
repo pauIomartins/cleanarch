@@ -28,7 +28,7 @@ public class StockGatewayImpl implements StockGateway {
     private final ProductGateway productGateway;
 
     @Override
-    public Stock create(Stock stock) {
+    public Stock create(final Stock stock) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("stock").usingGeneratedKeyColumns("id");
 
@@ -44,15 +44,15 @@ public class StockGatewayImpl implements StockGateway {
     }
 
     @Override
-    public Stock update(Stock stock) {
+    public Stock update(final Stock stock) {
         jdbcTemplate.update("UPDATE stock SET quantity=? WHERE id=?",
                 new Object[]{stock.getQuantity(), stock.getId()},
-                new Object[]{Types.NUMERIC, Types.INTEGER});
+                new int[]{Types.NUMERIC, Types.BIGINT});
         return stock;
     }
 
     @Override
-    public Optional<Stock> findByAddressAndProduct(Address address, Product product) {
+    public Optional<Stock> findByAddressAndProduct(final Address address, final Product product) {
         List<Stock> result = jdbcTemplate.query("SELECT * FROM stock WHERE address_id=? AND product_id=?",
                 new Object[]{address.getId(), product.getId()},
                 new StockRowMapper(addressGateway, productGateway));
@@ -61,5 +61,12 @@ public class StockGatewayImpl implements StockGateway {
         } else {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public void remove(Stock stock) {
+        jdbcTemplate.update("DELETE stock WHERE id=?",
+                new Object[]{stock.getId()},
+                new int[]{Types.BIGINT});
     }
 }

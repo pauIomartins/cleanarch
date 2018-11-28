@@ -20,6 +20,6 @@ public class StockRowMapper implements RowMapper<Stock> {
         return new Stock(rs.getLong("id"),
                 addressGateway.findById(rs.getLong("address_id")).get(),
                 productGateway.findById(rs.getLong("product_id")).get(),
-                rs.getDouble("quantity"));
+                rs.getBigDecimal("quantity"));
     }
 }

@@ -22,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -50,7 +51,7 @@ public class InputStockImplTest {
     @Test
     public void should_include_product_on_address_when_stock_is_empty() {
 
-        final Double inputQuantity = Math.random();
+        final BigDecimal inputQuantity = BigDecimal.valueOf(Math.random());
         final String addressLabel = "address-001";
         final String productEan = "product-001";
 
@@ -64,8 +65,14 @@ public class InputStockImplTest {
         Mockito.when(stockGateway.findByAddressAndProduct(address, product)).thenReturn(Optional.empty());
         Mockito.when(stockGateway.create(new Stock(null, address, product, inputQuantity))).thenReturn(stock);
 
-        final Movement movement = new Movement(address, product, inputQuantity, Movement.MovementType.INPUT);
-        movement.setId(8768678L);
+        final Movement movement = Movement.builder()
+                .id(8768678L)
+                .addressTo(address)
+                .product(product)
+                .quantity(inputQuantity)
+                .type(Movement.MovementType.INPUT)
+                .build();
+
         Mockito.when(movementGateway.create(new Movement(address, product, inputQuantity, Movement.MovementType.INPUT)))
                 .thenReturn(movement);
 
@@ -89,7 +96,7 @@ public class InputStockImplTest {
     @Test
     public void should_increment_stock_when_input_quantity_and_already_has_stock() {
 
-        final Double inputQuantity = Math.random();
+        final BigDecimal inputQuantity = BigDecimal.valueOf(Math.random());
         final String addressLabel = "address-001";
         final String productEan = "product-001";
 
@@ -102,12 +109,11 @@ public class InputStockImplTest {
         final Stock stock = new Stock(234L, address, product, inputQuantity);
         Mockito.when(stockGateway.findByAddressAndProduct(address, product)).thenReturn(Optional.of(stock));
 
-        final Double updatedQuantity = inputQuantity + inputQuantity;
+        final BigDecimal updatedQuantity = inputQuantity.add(inputQuantity);
         final Stock updatedStock = new Stock(234L, address, product, updatedQuantity);
         Mockito.when(stockGateway.update(updatedStock)).thenReturn(updatedStock);
 
-        final Movement movement = new Movement(address, product, inputQuantity, Movement.MovementType.INPUT);
-        movement.setId(8768678L);
+        final Movement movement = new Movement(8768678L, null, address, product, inputQuantity, Movement.MovementType.INPUT);
         Mockito.when(movementGateway.create(new Movement(address, product, inputQuantity, Movement.MovementType.INPUT)))
                 .thenReturn(movement);
 
@@ -131,7 +137,7 @@ public class InputStockImplTest {
     @Test(expected = InvalidAddressException.class)
     public void must_throw_exception_with_invalid_address() {
 
-        final Double inputQuantity = Math.random();
+        final BigDecimal inputQuantity = BigDecimal.valueOf(Math.random());
         final String addressLabel = "address-001";
         final String productEan = "product-001";
 
@@ -151,7 +157,7 @@ public class InputStockImplTest {
     @Test(expected = InvalidProductException.class)
     public void must_throw_exception_with_invalid_product() {
 
-        final Double inputQuantity = Math.random();
+        final BigDecimal inputQuantity = BigDecimal.valueOf(Math.random());
         final String addressLabel = "address-001";
         final String productEan = "product-001";
 
