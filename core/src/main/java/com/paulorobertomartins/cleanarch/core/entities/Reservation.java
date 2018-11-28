@@ -1,8 +1,12 @@
 package com.paulorobertomartins.cleanarch.core.entities;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@AllArgsConstructor
+@RequiredArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
 public class Reservation {
 
     private Long id;

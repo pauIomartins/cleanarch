@@ -6,6 +6,7 @@ import lombok.*;
 @RequiredArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 public class Product {
 
     private Long id;

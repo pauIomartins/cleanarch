@@ -1,13 +1,11 @@
 package com.paulorobertomartins.cleanarch.core.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 public class Movement {
 
     private Long id;

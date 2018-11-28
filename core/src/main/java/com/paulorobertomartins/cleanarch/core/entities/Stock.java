@@ -7,6 +7,7 @@ import lombok.*;
 @RequiredArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 public class Stock {
 
     private Long id;
