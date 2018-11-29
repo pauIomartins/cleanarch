@@ -5,10 +5,7 @@ import com.paulorobertomartins.cleanarch.core.entities.Movement;
 import com.paulorobertomartins.cleanarch.core.entities.Product;
 import com.paulorobertomartins.cleanarch.core.entities.Stock;
 import com.paulorobertomartins.cleanarch.core.usecases.TransferStock;
-import com.paulorobertomartins.cleanarch.core.usecases.exceptions.InvalidAddressException;
-import com.paulorobertomartins.cleanarch.core.usecases.exceptions.InvalidProductException;
-import com.paulorobertomartins.cleanarch.core.usecases.exceptions.NotEnoughStockException;
-import com.paulorobertomartins.cleanarch.core.usecases.exceptions.StockNotExistsException;
+import com.paulorobertomartins.cleanarch.core.usecases.exceptions.*;
 import com.paulorobertomartins.cleanarch.core.usecases.requestmodel.TransferStockRequest;
 import com.paulorobertomartins.cleanarch.core.usecases.responsemodel.TransferStockResponse;
 import com.paulorobertomartins.cleanarch.gateways.AddressGateway;
@@ -19,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 import javax.inject.Named;
 import javax.transaction.Transactional;
-import java.util.Optional;
+import java.math.BigDecimal;
 import java.util.function.Consumer;
 
 @Transactional
@@ -35,6 +32,21 @@ public class TransferStockImpl implements TransferStock {
     @Override
     public void execute(TransferStockRequest request, Consumer<TransferStockResponse> consumer) {
 
+        if (request.getAddressFromLabel() == null || request.getAddressFromLabel().trim().isEmpty()) {
+            throw new AddresLabelEmptyException();
+        }
+        if (request.getAddressToLabel() == null || request.getAddressToLabel().trim().isEmpty()) {
+            throw new AddresLabelEmptyException();
+        }
+        if (request.getProductEan() == null || request.getProductEan().trim().isEmpty()) {
+            throw new ProductEanEmptyException();
+        }
+        if (request.getQuantity() == null) {
+            throw new QuantityNullException();
+        } else if (request.getQuantity().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new QuantityLessThanZeroException();
+        }
+
         final Address addressFrom = addressGateway.findByLabel(request.getAddressFromLabel()).orElseThrow(InvalidAddressException::new);
         final Address addressTo = addressGateway.findByLabel(request.getAddressToLabel()).orElseThrow(InvalidAddressException::new);
         final Product product = productGateway.findByEan(request.getProductEan()).orElseThrow(InvalidProductException::new);
@@ -44,16 +56,9 @@ public class TransferStockImpl implements TransferStock {
             throw new NotEnoughStockException();
         }
 
-        final Optional<Stock> stockTo = stockGateway.findByAddressAndProduct(addressTo, product);
-
-        final Stock savedStock;
-        if (stockTo.isPresent()) {
-            final Stock stock = stockTo.get();
-            stock.incrementQuantity(request.getQuantity());
-            savedStock = stockGateway.update(stock);
-        } else {
-            savedStock = stockGateway.create(new Stock(addressTo, product, request.getQuantity()));
-        }
+        final Stock savedStock = stockGateway.createOrUpdate(
+                Stock.createOrUpdate(stockGateway.findByAddressAndProduct(addressTo, product), addressTo, product, request.getQuantity())
+        );
 
         stockFrom.decrementQuantity(request.getQuantity());
         stockGateway.update(stockFrom);

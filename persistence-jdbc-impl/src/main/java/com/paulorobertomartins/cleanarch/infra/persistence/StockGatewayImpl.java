@@ -52,6 +52,15 @@ public class StockGatewayImpl implements StockGateway {
     }
 
     @Override
+    public Stock createOrUpdate(Stock stock) {
+        if (stock.getId() != null) {
+            return this.create(stock);
+        } else {
+            return this.update(stock);
+        }
+    }
+
+    @Override
     public Optional<Stock> findByAddressAndProduct(final Address address, final Product product) {
         List<Stock> result = jdbcTemplate.query("SELECT * FROM stock WHERE address_id=? AND product_id=?",
                 new Object[]{address.getId(), product.getId()},

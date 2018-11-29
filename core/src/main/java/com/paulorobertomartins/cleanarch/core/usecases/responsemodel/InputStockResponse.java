@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 public class InputStockResponse {
 
     private final Long stockId;
+    private final Long movementId;
     private final String addressLabel;
     private final String productEan;
     private final BigDecimal quantity;

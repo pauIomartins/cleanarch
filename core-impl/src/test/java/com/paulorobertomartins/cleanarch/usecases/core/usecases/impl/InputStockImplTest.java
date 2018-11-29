@@ -63,7 +63,7 @@ public class InputStockImplTest {
 
         final Stock stock = new Stock(234L, address, product, inputQuantity);
         Mockito.when(stockGateway.findByAddressAndProduct(address, product)).thenReturn(Optional.empty());
-        Mockito.when(stockGateway.create(new Stock(null, address, product, inputQuantity))).thenReturn(stock);
+        Mockito.when(stockGateway.createOrUpdate(new Stock(null, address, product, inputQuantity))).thenReturn(stock);
 
         final Movement movement = Movement.builder()
                 .id(8768678L)
@@ -83,14 +83,7 @@ public class InputStockImplTest {
                 .productEan(productEan)
                 .quantity(inputQuantity).build();
 
-        final Consumer<InputStockResponse> consumer = (response) -> {
-            assertEquals(response.getAddressLabel(), addressLabel);
-            assertEquals(response.getProductEan(), productEan);
-            assertEquals(response.getQuantity(), inputQuantity);
-            assertEquals(response.getStockId(), stock.getId());
-        };
-
-        inputStock.execute(request, consumer);
+        inputStock.execute(request, assertResponse(addressLabel, productEan, inputQuantity, stock.getId(), movement.getId()));
     }
 
     @Test
@@ -111,7 +104,7 @@ public class InputStockImplTest {
 
         final BigDecimal updatedQuantity = inputQuantity.add(inputQuantity);
         final Stock updatedStock = new Stock(234L, address, product, updatedQuantity);
-        Mockito.when(stockGateway.update(updatedStock)).thenReturn(updatedStock);
+        Mockito.when(stockGateway.createOrUpdate(updatedStock)).thenReturn(updatedStock);
 
         final Movement movement = new Movement(8768678L, null, address, product, inputQuantity, Movement.MovementType.INPUT);
         Mockito.when(movementGateway.create(new Movement(address, product, inputQuantity, Movement.MovementType.INPUT)))
@@ -124,14 +117,7 @@ public class InputStockImplTest {
                 .productEan(productEan)
                 .quantity(inputQuantity).build();
 
-        final Consumer<InputStockResponse> consumer = (response) -> {
-            assertEquals(response.getAddressLabel(), addressLabel);
-            assertEquals(response.getProductEan(), productEan);
-            assertEquals(response.getQuantity(), updatedQuantity);
-            assertEquals(response.getStockId(), stock.getId());
-        };
-
-        inputStock.execute(request, consumer);
+        inputStock.execute(request, assertResponse(addressLabel, productEan, updatedQuantity, stock.getId(), movement.getId()));
     }
 
     @Test(expected = InvalidAddressException.class)
@@ -175,5 +161,15 @@ public class InputStockImplTest {
 
         inputStock.execute(request, (r) -> {
         });
+    }
+
+    private Consumer<InputStockResponse> assertResponse(final String addressLabel, final String productEan, final BigDecimal updatedQuantity, final Long stockId, final Long movementId) {
+        return (internalResponse) -> {
+            assertEquals(internalResponse.getAddressLabel(), addressLabel);
+            assertEquals(internalResponse.getProductEan(), productEan);
+            assertEquals(internalResponse.getQuantity(), updatedQuantity);
+            assertEquals(internalResponse.getStockId(), stockId);
+            assertEquals(internalResponse.getMovementId(), movementId);
+        };
     }
 }

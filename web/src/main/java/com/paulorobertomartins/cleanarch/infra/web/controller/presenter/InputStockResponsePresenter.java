@@ -15,7 +15,7 @@ public class InputStockResponsePresenter implements Consumer<InputStockResponse>
     public void accept(InputStockResponse response) {
         jsonResponse = CreateMovementJsonResponse.builder()
                 .stockId(response.getStockId())
-                .movementId(null)
+                .movementId(response.getMovementId())
                 .addressFrom(null)
                 .addressTo(response.getAddressLabel())
                 .productEan(response.getProductEan())
