@@ -53,7 +53,7 @@ public class StockGatewayImpl implements StockGateway {
 
     @Override
     public Stock createOrUpdate(Stock stock) {
-        if (stock.getId() != null) {
+        if (stock.getId() == null) {
             return this.create(stock);
         } else {
             return this.update(stock);
