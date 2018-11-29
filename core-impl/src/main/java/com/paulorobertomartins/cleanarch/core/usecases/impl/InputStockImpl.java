@@ -59,7 +59,7 @@ public class InputStockImpl implements InputStock {
         consumer.accept(InputStockResponse.builder()
                 .addressLabel(address.getLabel())
                 .productEan(product.getEan())
-                .quantity(savedStock.getQuantity())
+                .quantity(request.getQuantity())
                 .stockId(savedStock.getId())
                 .movementId(movement.getId())
                 .build());
