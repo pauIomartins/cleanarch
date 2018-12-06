@@ -11,11 +11,11 @@ import com.paulorobertomartins.cleanarch.infra.web.controller.payload.ExecuteTra
 import com.paulorobertomartins.cleanarch.infra.web.controller.presenter.InputStockResponsePresenter;
 import com.paulorobertomartins.cleanarch.infra.web.controller.presenter.TransferStockResponsePresenter;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -43,7 +43,7 @@ public class MovementController {
             return presenter.getJsonResponse();
 
         } else {
-            throw new NotImplementedException();
+            throw new NotImplementedException("TODO");
         }
     }
 }

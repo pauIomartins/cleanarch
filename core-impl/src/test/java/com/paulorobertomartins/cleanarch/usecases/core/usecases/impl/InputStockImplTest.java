@@ -14,8 +14,6 @@ import com.paulorobertomartins.cleanarch.gateways.AddressGateway;
 import com.paulorobertomartins.cleanarch.gateways.MovementGateway;
 import com.paulorobertomartins.cleanarch.gateways.ProductGateway;
 import com.paulorobertomartins.cleanarch.gateways.StockGateway;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -39,14 +37,6 @@ public class InputStockImplTest {
     private StockGateway stockGateway;
     @Mock
     private MovementGateway movementGateway;
-
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
 
     @Test
     public void should_include_product_on_address_when_stock_is_empty() {
@@ -117,7 +107,7 @@ public class InputStockImplTest {
                 .productEan(productEan)
                 .quantity(inputQuantity).build();
 
-        inputStock.execute(request, assertResponse(addressLabel, productEan, updatedQuantity, stock.getId(), movement.getId()));
+        inputStock.execute(request, assertResponse(addressLabel, productEan, inputQuantity, stock.getId(), movement.getId()));
     }
 
     @Test(expected = InvalidAddressException.class)
@@ -163,11 +153,11 @@ public class InputStockImplTest {
         });
     }
 
-    private Consumer<InputStockResponse> assertResponse(final String addressLabel, final String productEan, final BigDecimal updatedQuantity, final Long stockId, final Long movementId) {
+    private Consumer<InputStockResponse> assertResponse(final String addressLabel, final String productEan, final BigDecimal quantity, final Long stockId, final Long movementId) {
         return (internalResponse) -> {
             assertEquals(internalResponse.getAddressLabel(), addressLabel);
             assertEquals(internalResponse.getProductEan(), productEan);
-            assertEquals(internalResponse.getQuantity(), updatedQuantity);
+            assertEquals(internalResponse.getQuantity(), quantity);
             assertEquals(internalResponse.getStockId(), stockId);
             assertEquals(internalResponse.getMovementId(), movementId);
         };

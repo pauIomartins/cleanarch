@@ -1,10 +1,21 @@
-plugins {
-    id 'java'
+buildscript {
+    repositories { mavenCentral() }
 }
+
+plugins { id "io.spring.dependency-management" version "1.0.5.RELEASE" }
+
+ext { springBootVersion = '2.0.5.RELEASE' }
+
+apply plugin: 'java'
 
 group 'com.paulorobertomartins.cleanarch'
 version '1.0-SNAPSHOT'
 sourceCompatibility = 1.8
+
+jar {
+    baseName = 'persistence-jdbc-impl'
+    version = '0.0.1-SNAPSHOT'
+}
 
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.2'
@@ -12,15 +23,14 @@ dependencies {
     compile project(':core')
     compile project(':core-impl')
 
-
-
-    compile("org.springframework:spring-jdbc:5.1.1.RELEASE")
-
     compile('org.flywaydb:flyway-core:5.1.1')
-
-    // compile('org.springframework.boot:spring-boot-starter-jdbc')
+    compile('org.springframework.boot:spring-boot-starter-jdbc')
 
     runtime('com.h2database:h2')
 
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+dependencyManagement {
+    imports { mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}") }
 }
