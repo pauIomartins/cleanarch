@@ -1,13 +1,13 @@
-package com.paulorobertomartins.cleanarch.usecases.core.usecases.impl;
+package com.paulorobertomartins.cleanarch.core.usecases.impl;
 
 import com.paulorobertomartins.cleanarch.core.entities.Address;
 import com.paulorobertomartins.cleanarch.core.entities.Movement;
 import com.paulorobertomartins.cleanarch.core.entities.Product;
 import com.paulorobertomartins.cleanarch.core.entities.Stock;
+import com.paulorobertomartins.cleanarch.core.usecases.CreateOrUpdateStock;
 import com.paulorobertomartins.cleanarch.core.usecases.InputStock;
 import com.paulorobertomartins.cleanarch.core.usecases.exceptions.InvalidAddressException;
 import com.paulorobertomartins.cleanarch.core.usecases.exceptions.InvalidProductException;
-import com.paulorobertomartins.cleanarch.core.usecases.impl.InputStockImpl;
 import com.paulorobertomartins.cleanarch.core.usecases.requestmodel.InputStockRequest;
 import com.paulorobertomartins.cleanarch.core.usecases.responsemodel.InputStockResponse;
 import com.paulorobertomartins.cleanarch.gateways.AddressGateway;
@@ -37,6 +37,8 @@ public class InputStockImplTest {
     private StockGateway stockGateway;
     @Mock
     private MovementGateway movementGateway;
+    @Mock
+    private CreateOrUpdateStock createOrUpdateStock;
 
     @Test
     public void should_include_product_on_address_when_stock_is_empty() {
@@ -51,9 +53,12 @@ public class InputStockImplTest {
         final Product product = new Product(999L, "Test Product", productEan);
         Mockito.when(productGateway.findByEan(productEan)).thenReturn(Optional.of(product));
 
-        final Stock stock = new Stock(234L, address, product, inputQuantity);
+        final Stock stockInProcess = new Stock(null, address, product, inputQuantity);
+        final Stock stockPersisted = new Stock(234L, address, product, inputQuantity);
+
         Mockito.when(stockGateway.findByAddressAndProduct(address, product)).thenReturn(Optional.empty());
-        Mockito.when(stockGateway.createOrUpdate(new Stock(null, address, product, inputQuantity))).thenReturn(stock);
+        Mockito.when(createOrUpdateStock.execute(address, product, inputQuantity)).thenReturn(stockInProcess);
+        Mockito.when(stockGateway.createOrUpdate(stockInProcess)).thenReturn(stockPersisted);
 
         final Movement movement = Movement.builder()
                 .id(8768678L)
@@ -66,14 +71,14 @@ public class InputStockImplTest {
         Mockito.when(movementGateway.create(new Movement(address, product, inputQuantity, Movement.MovementType.INPUT)))
                 .thenReturn(movement);
 
-        final InputStock inputStock = new InputStockImpl(stockGateway, addressGateway, productGateway, movementGateway);
+        final InputStock inputStock = new InputStockImpl(stockGateway, addressGateway, productGateway, movementGateway, createOrUpdateStock);
 
         final InputStockRequest request = InputStockRequest.builder()
                 .addressLabel(addressLabel)
                 .productEan(productEan)
                 .quantity(inputQuantity).build();
 
-        inputStock.execute(request, assertResponse(addressLabel, productEan, inputQuantity, stock.getId(), movement.getId()));
+        inputStock.execute(request, assertResponse(addressLabel, productEan, inputQuantity, stockPersisted.getId(), movement.getId()));
     }
 
     @Test
@@ -94,13 +99,14 @@ public class InputStockImplTest {
 
         final BigDecimal updatedQuantity = inputQuantity.add(inputQuantity);
         final Stock updatedStock = new Stock(234L, address, product, updatedQuantity);
+        Mockito.when(createOrUpdateStock.execute(address, product, inputQuantity)).thenReturn(updatedStock);
         Mockito.when(stockGateway.createOrUpdate(updatedStock)).thenReturn(updatedStock);
 
         final Movement movement = new Movement(8768678L, null, address, product, inputQuantity, Movement.MovementType.INPUT);
         Mockito.when(movementGateway.create(new Movement(address, product, inputQuantity, Movement.MovementType.INPUT)))
                 .thenReturn(movement);
 
-        final InputStock inputStock = new InputStockImpl(stockGateway, addressGateway, productGateway, movementGateway);
+        final InputStock inputStock = new InputStockImpl(stockGateway, addressGateway, productGateway, movementGateway, createOrUpdateStock);
 
         final InputStockRequest request = InputStockRequest.builder()
                 .addressLabel(addressLabel)
@@ -119,7 +125,7 @@ public class InputStockImplTest {
 
         Mockito.when(addressGateway.findByLabel(addressLabel)).thenReturn(Optional.empty());
 
-        final InputStock inputStock = new InputStockImpl(stockGateway, addressGateway, productGateway, movementGateway);
+        final InputStock inputStock = new InputStockImpl(stockGateway, addressGateway, productGateway, movementGateway, createOrUpdateStock);
 
         final InputStockRequest request = InputStockRequest.builder()
                 .addressLabel(addressLabel)
@@ -142,7 +148,7 @@ public class InputStockImplTest {
 
         Mockito.when(productGateway.findByEan(productEan)).thenReturn(Optional.empty());
 
-        final InputStock inputStock = new InputStockImpl(stockGateway, addressGateway, productGateway, movementGateway);
+        final InputStock inputStock = new InputStockImpl(stockGateway, addressGateway, productGateway, movementGateway, createOrUpdateStock);
 
         final InputStockRequest request = InputStockRequest.builder()
                 .addressLabel(addressLabel)

@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -42,6 +43,46 @@ public class StockGatewayImplTest {
         assertNotNull(stock.getId());
         assertEquals(stock.getAddress(), address);
         assertEquals(stock.getProduct(), product);
+    }
+
+    @Test
+    public void should_find_by_address() {
+
+        createManyStock();
+
+        final Address address = addressGateway.findByLabel("add-1-2-3").get();
+
+        final List<Stock> stockList = stockGateway.findByAddress(address);
+
+        assertNotNull(stockList);
+        assertFalse(stockList.isEmpty());
+        assertEquals(3, stockList.size());
+    }
+
+    @Test
+    public void should_find_by_product() {
+
+        createManyStock();
+
+        final Product product = productGateway.findByEan("p001").get();
+
+        final List<Stock> stockList = stockGateway.findByProduct(product);
+
+        assertNotNull(stockList);
+        assertFalse(stockList.isEmpty());
+        assertEquals(3, stockList.size());
+    }
+
+    @Test
+    public void should_find_all() {
+
+        createManyStock();
+
+        final List<Stock> stockList = stockGateway.findAll();
+
+        assertNotNull(stockList);
+        assertFalse(stockList.isEmpty());
+        assertEquals(12, stockList.size());
     }
 
     @Test
@@ -95,16 +136,50 @@ public class StockGatewayImplTest {
     }
 
     private Product createProduct() {
-        final String productEan = "product-" + ((Double) Math.random()).intValue();
+        return this.createProduct("product-" + ((Double) Math.random()).intValue());
+    }
+
+    private Product createProduct(final String productEan) {
         return productGateway.persist(new Product("Description of " + productEan, productEan));
     }
 
     private Address createAddress() {
-        return addressGateway.persist(new Address("address-" + ((Double) Math.random()).intValue()));
+        return this.createAddress("address-" + ((Double) Math.random()).intValue());
+    }
+
+    private Address createAddress(final String addressLabel) {
+        return addressGateway.persist(new Address(addressLabel));
     }
 
     private Stock createStock(final Address address, final Product product) {
         final BigDecimal quantity = BigDecimal.valueOf(Math.random());
         return stockGateway.create(new Stock(address, product, quantity));
+    }
+
+    private void createManyStock() {
+        final Product p1 = createProduct("p001");
+        final Product p2 = createProduct("p002");
+        final Product p3 = createProduct("p003");
+
+        createProduct();
+
+        final Address a1 = createAddress("add-1-2-3");
+        final Address a2 = createAddress("add-2-4-6");
+        final Address a3 = createAddress("add-3-4-5");
+
+        this.createStock(a1, p1);
+        this.createStock(a1, p2);
+        this.createStock(a1, p3);
+
+        this.createStock(a2, p1);
+        this.createStock(a2, p2);
+        this.createStock(a2, p3);
+        this.createStock(a2, createProduct());
+
+        this.createStock(a3, p1);
+        this.createStock(a3, p2);
+        this.createStock(a3, p3);
+        this.createStock(a3, createProduct());
+        this.createStock(a3, createProduct());
     }
 }

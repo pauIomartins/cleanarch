@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Builder(toBuilder = true)
 @Value
-public class GetStockRequest {
+public class GetStockByAddressRequest {
 
     private final String addressLabel;
 }

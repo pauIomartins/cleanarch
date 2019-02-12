@@ -3,7 +3,6 @@ package com.paulorobertomartins.cleanarch.core.entities;
 import lombok.*;
 
 @AllArgsConstructor
-@RequiredArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode

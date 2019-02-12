@@ -3,7 +3,6 @@ package com.paulorobertomartins.cleanarch.core.entities;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,17 +30,5 @@ public class Stock {
 
     public boolean isEmpty() {
         return this.quantity.compareTo(BigDecimal.ZERO) <= 0;
-    }
-
-    public static Stock createOrUpdate(Optional<Stock> stockOptional, final Address address, final Product product, final BigDecimal quantity) {
-
-        Stock stock;
-        if (stockOptional.isPresent()) {
-            stock = stockOptional.get();
-            stock.incrementQuantity(quantity);
-        } else {
-            stock = new Stock(address, product, quantity);
-        }
-        return stock;
     }
 }

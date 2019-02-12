@@ -4,6 +4,7 @@ import com.paulorobertomartins.cleanarch.core.entities.Address;
 import com.paulorobertomartins.cleanarch.core.entities.Movement;
 import com.paulorobertomartins.cleanarch.core.entities.Product;
 import com.paulorobertomartins.cleanarch.core.entities.Stock;
+import com.paulorobertomartins.cleanarch.core.usecases.CreateOrUpdateStock;
 import com.paulorobertomartins.cleanarch.core.usecases.TransferStock;
 import com.paulorobertomartins.cleanarch.core.usecases.exceptions.*;
 import com.paulorobertomartins.cleanarch.core.usecases.requestmodel.TransferStockRequest;
@@ -28,6 +29,7 @@ public class TransferStockImpl implements TransferStock {
     private final AddressGateway addressGateway;
     private final ProductGateway productGateway;
     private final MovementGateway movementGateway;
+    private final CreateOrUpdateStock createOrUpdateStock;
 
     @Override
     public void execute(TransferStockRequest request, Consumer<TransferStockResponse> consumer) {
@@ -57,7 +59,7 @@ public class TransferStockImpl implements TransferStock {
         }
 
         final Stock savedStock = stockGateway.createOrUpdate(
-                Stock.createOrUpdate(stockGateway.findByAddressAndProduct(addressTo, product), addressTo, product, request.getQuantity())
+                createOrUpdateStock.execute(addressTo, product, request.getQuantity())
         );
 
         stockFrom.decrementQuantity(request.getQuantity());

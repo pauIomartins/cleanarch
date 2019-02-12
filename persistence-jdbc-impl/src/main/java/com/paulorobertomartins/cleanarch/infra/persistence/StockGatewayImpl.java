@@ -3,8 +3,6 @@ package com.paulorobertomartins.cleanarch.infra.persistence;
 import com.paulorobertomartins.cleanarch.core.entities.Address;
 import com.paulorobertomartins.cleanarch.core.entities.Product;
 import com.paulorobertomartins.cleanarch.core.entities.Stock;
-import com.paulorobertomartins.cleanarch.gateways.AddressGateway;
-import com.paulorobertomartins.cleanarch.gateways.ProductGateway;
 import com.paulorobertomartins.cleanarch.gateways.StockGateway;
 import com.paulorobertomartins.cleanarch.infra.persistence.rowmapper.StockRowMapper;
 import lombok.RequiredArgsConstructor;
@@ -14,18 +12,13 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.inject.Named;
 import java.sql.Types;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Named
 public class StockGatewayImpl implements StockGateway {
 
     private final JdbcTemplate jdbcTemplate;
-    private final AddressGateway addressGateway;
-    private final ProductGateway productGateway;
 
     @Override
     public Stock create(final Stock stock) {
@@ -61,10 +54,23 @@ public class StockGatewayImpl implements StockGateway {
     }
 
     @Override
+    public List<Stock> findAll() {
+        return doQuery(null, null);
+    }
+
+    @Override
+    public List<Stock> findByAddress(Address address) {
+        return doQuery(address, null);
+    }
+
+    @Override
+    public List<Stock> findByProduct(Product product) {
+        return doQuery(null, product);
+    }
+
+    @Override
     public Optional<Stock> findByAddressAndProduct(final Address address, final Product product) {
-        List<Stock> result = jdbcTemplate.query("SELECT * FROM stock WHERE address_id=? AND product_id=?",
-                new Object[]{address.getId(), product.getId()},
-                new StockRowMapper(addressGateway, productGateway));
+        List<Stock> result = doQuery(address, product);
         if (!result.isEmpty()) {
             return Optional.of(result.get(0));
         } else {
@@ -77,5 +83,39 @@ public class StockGatewayImpl implements StockGateway {
         jdbcTemplate.update("DELETE stock WHERE id=?",
                 new Object[]{stock.getId()},
                 new int[]{Types.BIGINT});
+    }
+
+
+    private List<Stock> doQuery(final Address address, final Product product) {
+
+        final List<Object> params = new ArrayList<>();
+
+        final StringBuilder sb = new StringBuilder();
+
+        sb.append("SELECT s.*, \n");
+        sb.append("       a.label AS address_label, \n");
+        sb.append("       p.ean AS product_ean, \n");
+        sb.append("       p.description AS product_description \n");
+        sb.append("  FROM stock s \n");
+        sb.append(" INNER JOIN address a ON (a.id = s.address_id) \n");
+        sb.append(" INNER JOIN product p ON (p.id = s.product_id) \n");
+        if (address != null || product != null) {
+
+            String keyWord = " WHERE \n";
+
+            if (address != null) {
+                params.add(address.getId());
+                sb.append(keyWord).append("       s.address_id = ? \n");
+                keyWord = " AND ";
+            }
+            if (product != null) {
+                params.add(product.getId());
+                sb.append(keyWord).append("       s.product_id = ? \n");
+            }
+        }
+
+        return jdbcTemplate.query(sb.toString(),
+                params.toArray(),
+                new StockRowMapper());
     }
 }

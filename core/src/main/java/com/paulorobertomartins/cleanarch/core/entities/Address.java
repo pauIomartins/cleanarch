@@ -6,7 +6,7 @@ import lombok.*;
 @RequiredArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "id")
 public class Address {
 
     private Long id;

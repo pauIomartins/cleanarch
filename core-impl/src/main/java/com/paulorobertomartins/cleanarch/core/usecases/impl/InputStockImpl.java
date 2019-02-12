@@ -4,6 +4,7 @@ import com.paulorobertomartins.cleanarch.core.entities.Address;
 import com.paulorobertomartins.cleanarch.core.entities.Movement;
 import com.paulorobertomartins.cleanarch.core.entities.Product;
 import com.paulorobertomartins.cleanarch.core.entities.Stock;
+import com.paulorobertomartins.cleanarch.core.usecases.CreateOrUpdateStock;
 import com.paulorobertomartins.cleanarch.core.usecases.InputStock;
 import com.paulorobertomartins.cleanarch.core.usecases.exceptions.*;
 import com.paulorobertomartins.cleanarch.core.usecases.requestmodel.InputStockRequest;
@@ -28,6 +29,7 @@ public class InputStockImpl implements InputStock {
     private final AddressGateway addressGateway;
     private final ProductGateway productGateway;
     private final MovementGateway movementGateway;
+    private final CreateOrUpdateStock createOrUpdateStock;
 
     @Override
     public void execute(InputStockRequest request, Consumer<InputStockResponse> consumer) {
@@ -51,7 +53,7 @@ public class InputStockImpl implements InputStock {
                 .orElseThrow(InvalidProductException::new);
 
         final Stock savedStock = stockGateway.createOrUpdate(
-                Stock.createOrUpdate(stockGateway.findByAddressAndProduct(address, product), address, product, request.getQuantity())
+                createOrUpdateStock.execute(address, product, request.getQuantity())
         );
 
         final Movement movement = movementGateway.create(Movement.newInputMovement(address, product, request.getQuantity()));
