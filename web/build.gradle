@@ -27,7 +27,8 @@ dependencies {
 
     compile project(':core')
     runtime project(':core-impl')
-    runtime project(':persistence-jdbc-impl')
+    // runtime project(':persistence-jdbc-impl')
+    runtime project(':persistence-jpa-impl')
 
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.apache.commons:commons-lang3:3.8.1')

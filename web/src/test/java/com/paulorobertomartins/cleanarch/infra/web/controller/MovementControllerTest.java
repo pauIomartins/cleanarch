@@ -42,6 +42,7 @@ public class MovementControllerTest {
     public void setup() {
         RestAssured.port = randomServerPort;
         RestAssured.baseURI = "http://localhost";
+
     }
 
     @Test
@@ -80,9 +81,9 @@ public class MovementControllerTest {
     @Test
     public void should_create_a_transfer_movement() {
 
-        final String addressFromLabel = "from-001";
-        final String addressToLabel = "to-001";
-        final String productEan = "xyz_001";
+        final String addressFromLabel = "from-999";
+        final String addressToLabel = "to-888";
+        final String productEan = "xyz_123";
         final Integer quantity = 10;
 
         final Consumer consumer = (response) -> {
