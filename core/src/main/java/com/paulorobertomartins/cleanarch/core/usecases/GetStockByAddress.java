@@ -6,5 +6,5 @@ import com.paulorobertomartins.cleanarch.core.usecases.responsemodel.GetStockRes
 import java.util.List;
 
 @FunctionalInterface
-public interface GetStockByAddress extends Usecase<GetStockByAddressRequest, List<GetStockResponse>> {
+public interface GetStockByAddress extends UseCase<GetStockByAddressRequest, List<GetStockResponse>> {
 }

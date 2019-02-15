@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Getter
-public class GetStockReponsePresenter implements Consumer<List<GetStockResponse>> {
+public class GetStockResponsePresenter implements Consumer<List<GetStockResponse>> {
 
     private List<GetStockJsonResponse> jsonResponse;
 

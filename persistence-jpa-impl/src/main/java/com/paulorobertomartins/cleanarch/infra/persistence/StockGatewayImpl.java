@@ -63,21 +63,14 @@ public class StockGatewayImpl implements StockGateway {
     @Override
     public List<Stock> findAll() {
 
-        final TypedQuery<StockEntity> query = entityManager.createQuery("SELECT s " +
-                " FROM StockEntity s " +
-                " JOIN FETCH s.addressEntity a " +
-                " JOIN FETCH s.productEntity p ", StockEntity.class);
+        final TypedQuery<StockEntity> query = entityManager.createQuery(buildQuery(null, null), StockEntity.class);
 
         return extractResult(query);
     }
 
     @Override
     public List<Stock> findByAddress(final Address address) {
-        final TypedQuery<StockEntity> query = entityManager.createQuery("SELECT s " +
-                "  FROM StockEntity s " +
-                "  JOIN FETCH s.addressEntity a " +
-                "  JOIN FETCH s.productEntity p " +
-                " WHERE a.id = :address_id", StockEntity.class);
+        final TypedQuery<StockEntity> query = entityManager.createQuery(buildQuery(address, null), StockEntity.class);
         query.setParameter("address_id", address.getId());
 
         return extractResult(query);
@@ -85,11 +78,7 @@ public class StockGatewayImpl implements StockGateway {
 
     @Override
     public List<Stock> findByProduct(final Product product) {
-        final TypedQuery<StockEntity> query = entityManager.createQuery("SELECT s " +
-                "  FROM StockEntity s " +
-                "  JOIN FETCH s.addressEntity a " +
-                "  JOIN FETCH s.productEntity p " +
-                " WHERE p.id = :product_id", StockEntity.class);
+        final TypedQuery<StockEntity> query = entityManager.createQuery(buildQuery(null, product), StockEntity.class);
         query.setParameter("product_id", product.getId());
 
         return extractResult(query);
@@ -98,12 +87,7 @@ public class StockGatewayImpl implements StockGateway {
     @Override
     public Optional<Stock> findByAddressAndProduct(final Address address, final Product product) {
 
-        final TypedQuery<StockEntity> query = entityManager.createQuery("SELECT s " +
-                "  FROM StockEntity s " +
-                "  JOIN FETCH s.addressEntity a " +
-                "  JOIN FETCH s.productEntity p " +
-                " WHERE a.id = :address_id " +
-                "   AND p.id = :product_id", StockEntity.class);
+        final TypedQuery<StockEntity> query = entityManager.createQuery(buildQuery(address, product), StockEntity.class);
         query.setParameter("address_id", address.getId());
         query.setParameter("product_id", product.getId());
 
@@ -140,5 +124,24 @@ public class StockGatewayImpl implements StockGateway {
                         new Product(entity.getProductEntity().getId(), entity.getProductEntity().getDescription(), entity.getProductEntity().getEan()),
                         entity.getQuantity()))
                 .collect(Collectors.toList());
+    }
+
+    private String buildQuery(final Address address, final Product product) {
+
+        final StringBuilder sb = new StringBuilder();
+        sb.append("SELECT s ");
+        sb.append("  FROM StockEntity s ");
+        sb.append("  JOIN FETCH s.addressEntity a ");
+        sb.append("  JOIN FETCH s.productEntity p ");
+
+        String clause = " WHERE ";
+        if (address != null) {
+            sb.append(clause).append(" a.id = :address_id ");
+            clause = " AND ";
+        }
+        if (product != null) {
+            sb.append(clause).append(" p.id = :product_id ");
+        }
+        return sb.toString();
     }
 }

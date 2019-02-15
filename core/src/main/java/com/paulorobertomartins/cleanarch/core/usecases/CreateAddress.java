@@ -4,5 +4,5 @@ import com.paulorobertomartins.cleanarch.core.usecases.requestmodel.CreateAddres
 import com.paulorobertomartins.cleanarch.core.usecases.responsemodel.CreateAddressResponse;
 
 @FunctionalInterface
-public interface CreateAddress extends Usecase<CreateAddressRequest, CreateAddressResponse> {
+public interface CreateAddress extends UseCase<CreateAddressRequest, CreateAddressResponse> {
 }

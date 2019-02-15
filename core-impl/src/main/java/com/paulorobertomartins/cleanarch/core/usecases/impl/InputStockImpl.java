@@ -35,7 +35,7 @@ public class InputStockImpl implements InputStock {
     public void execute(InputStockRequest request, Consumer<InputStockResponse> consumer) {
 
         if (request.getAddressLabel() == null || request.getAddressLabel().trim().isEmpty()) {
-            throw new AddresLabelEmptyException();
+            throw new AddressLabelEmptyException();
         }
         if (request.getProductEan() == null || request.getProductEan().trim().isEmpty()) {
             throw new ProductEanEmptyException();

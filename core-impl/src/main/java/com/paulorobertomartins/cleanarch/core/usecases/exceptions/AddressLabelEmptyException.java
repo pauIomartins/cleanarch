@@ -1,8 +1,8 @@
 package com.paulorobertomartins.cleanarch.core.usecases.exceptions;
 
-public class AddresLabelEmptyException extends UseCaseException {
+public class AddressLabelEmptyException extends UseCaseException {
 
-    public AddresLabelEmptyException() {
+    public AddressLabelEmptyException() {
         super("Address label cannot be empty.");
     }
 }

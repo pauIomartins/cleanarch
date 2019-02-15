@@ -24,10 +24,10 @@ public abstract class ExecuteMovementPayload<T> {
     private final BigDecimal quantity;
 
     @JsonCreator
-    public ExecuteMovementPayload(@JsonProperty("address_from") String addressFromLabel,
-                                  @JsonProperty("address_to") String addressToLabel,
-                                  @JsonProperty("product_ean") String productEan,
-                                  @JsonProperty("quantity") BigDecimal quantity) {
+    ExecuteMovementPayload(@JsonProperty("address_from") String addressFromLabel,
+                           @JsonProperty("address_to") String addressToLabel,
+                           @JsonProperty("product_ean") String productEan,
+                           @JsonProperty("quantity") BigDecimal quantity) {
         this.addressFromLabel = addressFromLabel;
         this.addressToLabel = addressToLabel;
         this.productEan = productEan;

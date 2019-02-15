@@ -6,8 +6,8 @@ import com.paulorobertomartins.cleanarch.core.usecases.requestmodel.GetStockByPr
 import com.paulorobertomartins.cleanarch.infra.web.controller.jsonresponse.CreateProductJsonResponse;
 import com.paulorobertomartins.cleanarch.infra.web.controller.jsonresponse.GetStockJsonResponse;
 import com.paulorobertomartins.cleanarch.infra.web.controller.payload.CreateProductPayload;
-import com.paulorobertomartins.cleanarch.infra.web.controller.presenter.CreateProductReponsePresenter;
-import com.paulorobertomartins.cleanarch.infra.web.controller.presenter.GetStockReponsePresenter;
+import com.paulorobertomartins.cleanarch.infra.web.controller.presenter.CreateProductResponsePresenter;
+import com.paulorobertomartins.cleanarch.infra.web.controller.presenter.GetStockResponsePresenter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,14 +25,14 @@ public class ProductController {
     @ResponseStatus(CREATED)
     @PostMapping(path = "/products")
     public CreateProductJsonResponse createAddress(@RequestBody final CreateProductPayload payload) {
-        final CreateProductReponsePresenter presenter = new CreateProductReponsePresenter();
+        final CreateProductResponsePresenter presenter = new CreateProductResponsePresenter();
         createProduct.execute(payload.toCreateProductRequest(), presenter);
         return presenter.getJsonResponse();
     }
 
     @GetMapping("/products/{productEan}/stock")
     public List<GetStockJsonResponse> getGetStockByProduct(@PathVariable("productEan") final String productEan) {
-        final GetStockReponsePresenter presenter = new GetStockReponsePresenter();
+        final GetStockResponsePresenter presenter = new GetStockResponsePresenter();
         getStockByProduct.execute(GetStockByProductRequest.builder().productEan(productEan).build(), presenter);
         return presenter.getJsonResponse();
     }

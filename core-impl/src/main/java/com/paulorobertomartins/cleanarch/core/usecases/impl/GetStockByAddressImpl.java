@@ -2,7 +2,7 @@ package com.paulorobertomartins.cleanarch.core.usecases.impl;
 
 import com.paulorobertomartins.cleanarch.core.entities.Address;
 import com.paulorobertomartins.cleanarch.core.usecases.GetStockByAddress;
-import com.paulorobertomartins.cleanarch.core.usecases.exceptions.AddresLabelEmptyException;
+import com.paulorobertomartins.cleanarch.core.usecases.exceptions.AddressLabelEmptyException;
 import com.paulorobertomartins.cleanarch.core.usecases.exceptions.InvalidAddressException;
 import com.paulorobertomartins.cleanarch.core.usecases.requestmodel.GetStockByAddressRequest;
 import com.paulorobertomartins.cleanarch.core.usecases.responsemodel.GetStockResponse;
@@ -28,7 +28,7 @@ public class GetStockByAddressImpl implements GetStockByAddress {
     public void execute(GetStockByAddressRequest request, Consumer<List<GetStockResponse>> consumer) {
 
         if (request.getAddressLabel() == null || request.getAddressLabel().trim().isEmpty()) {
-            throw new AddresLabelEmptyException();
+            throw new AddressLabelEmptyException();
         }
         final Address address = addressGateway.findByLabel(request.getAddressLabel())
                 .orElseThrow(InvalidAddressException::new);

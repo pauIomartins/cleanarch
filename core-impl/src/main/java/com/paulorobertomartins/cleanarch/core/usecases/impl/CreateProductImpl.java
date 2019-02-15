@@ -16,15 +16,15 @@ import java.util.function.Consumer;
 @Named
 public class CreateProductImpl implements CreateProduct {
 
-    private final ProductGateway ProductGateway;
+    private final ProductGateway productGateway;
 
     @Override
     public void execute(CreateProductRequest request, Consumer<CreateProductResponse> consumer) {
-        final Product ProductSaved = ProductGateway.persist(new Product(request.getDescription(), request.getEan()));
+        final Product productSaved = productGateway.persist(new Product(request.getDescription(), request.getEan()));
         consumer.accept(CreateProductResponse.builder()
-                .id(ProductSaved.getId())
-                .description(ProductSaved.getDescription())
-                .ean(ProductSaved.getEan())
+                .id(productSaved.getId())
+                .description(productSaved.getDescription())
+                .ean(productSaved.getEan())
                 .build());
     }
 }

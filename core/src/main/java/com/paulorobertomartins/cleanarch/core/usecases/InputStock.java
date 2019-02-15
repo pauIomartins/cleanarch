@@ -4,5 +4,5 @@ import com.paulorobertomartins.cleanarch.core.usecases.requestmodel.InputStockRe
 import com.paulorobertomartins.cleanarch.core.usecases.responsemodel.InputStockResponse;
 
 @FunctionalInterface
-public interface InputStock extends Usecase<InputStockRequest, InputStockResponse> {
+public interface InputStock extends UseCase<InputStockRequest, InputStockResponse> {
 }

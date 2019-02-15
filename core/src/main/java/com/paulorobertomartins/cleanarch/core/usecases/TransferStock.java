@@ -4,5 +4,5 @@ import com.paulorobertomartins.cleanarch.core.usecases.requestmodel.TransferStoc
 import com.paulorobertomartins.cleanarch.core.usecases.responsemodel.TransferStockResponse;
 
 @FunctionalInterface
-public interface TransferStock extends Usecase<TransferStockRequest, TransferStockResponse> {
+public interface TransferStock extends UseCase<TransferStockRequest, TransferStockResponse> {
 }

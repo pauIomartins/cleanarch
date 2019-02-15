@@ -7,7 +7,7 @@ import lombok.Getter;
 import java.util.function.Consumer;
 
 @Getter
-public class CreateProductReponsePresenter implements Consumer<CreateProductResponse> {
+public class CreateProductResponsePresenter implements Consumer<CreateProductResponse> {
 
     private CreateProductJsonResponse jsonResponse;
 

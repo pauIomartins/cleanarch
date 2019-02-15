@@ -4,5 +4,5 @@ import com.paulorobertomartins.cleanarch.core.usecases.requestmodel.CreateProduc
 import com.paulorobertomartins.cleanarch.core.usecases.responsemodel.CreateProductResponse;
 
 @FunctionalInterface
-public interface CreateProduct extends Usecase<CreateProductRequest, CreateProductResponse> {
+public interface CreateProduct extends UseCase<CreateProductRequest, CreateProductResponse> {
 }

@@ -35,10 +35,10 @@ public class TransferStockImpl implements TransferStock {
     public void execute(TransferStockRequest request, Consumer<TransferStockResponse> consumer) {
 
         if (request.getAddressFromLabel() == null || request.getAddressFromLabel().trim().isEmpty()) {
-            throw new AddresLabelEmptyException();
+            throw new AddressLabelEmptyException();
         }
         if (request.getAddressToLabel() == null || request.getAddressToLabel().trim().isEmpty()) {
-            throw new AddresLabelEmptyException();
+            throw new AddressLabelEmptyException();
         }
         if (request.getProductEan() == null || request.getProductEan().trim().isEmpty()) {
             throw new ProductEanEmptyException();

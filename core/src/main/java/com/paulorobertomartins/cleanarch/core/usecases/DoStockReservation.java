@@ -4,5 +4,5 @@ import com.paulorobertomartins.cleanarch.core.usecases.requestmodel.StockReserva
 import com.paulorobertomartins.cleanarch.core.usecases.responsemodel.StockReservationResponse;
 
 @FunctionalInterface
-public interface DoStockReservation extends Usecase<StockReservationRequest, StockReservationResponse> {
+public interface DoStockReservation extends UseCase<StockReservationRequest, StockReservationResponse> {
 }

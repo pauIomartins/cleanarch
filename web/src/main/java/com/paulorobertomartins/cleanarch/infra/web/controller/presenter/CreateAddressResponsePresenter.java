@@ -7,7 +7,7 @@ import lombok.Getter;
 import java.util.function.Consumer;
 
 @Getter
-public class CreateAddressReponsePresenter implements Consumer<CreateAddressResponse> {
+public class CreateAddressResponsePresenter implements Consumer<CreateAddressResponse> {
 
     private CreateAddressJsonResponse jsonResponse;
 
