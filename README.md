@@ -11,6 +11,12 @@ Lab para estudo da idéia de Clean Arch do Uncle Bob.
 
 Na _minha opinião_ Clean Architecture é uma forma de pensar, estruturar e organizar uma aplicação de software aplicando fortemente boas práticas de Programação Orientada a Objetos. Práticas como: Escrever código com **Responsabilidade Única**, classes e funções que sejam **Coesas**, possuam **Baixo Nível de Acoplamento** com suas dependencias, aplicam o princípio de **Inversão de Dependência**, naturalmente levam a um desenho arquitetural mais limpo.
 
+## Diagrama Uncle Bob
+![The Clean Architecture](http://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg)
+
+## Diagrama de Componentes
+![Components](http://i.imgur.com/WkBAATy.png)
+
 ## Problemas comuns onde Clean Arch pode ajudar
 * Decisões de infraestrutura tomadas no início do projeto (banco de dados, frameworks, ferramentas de messageria);
 * Desenhos baseados em stack tecnológico e não em necessidades de negócio;
