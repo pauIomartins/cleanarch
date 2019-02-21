@@ -15,7 +15,7 @@ Na _minha opinião_ Clean Architecture é uma forma de pensar, estruturar e orga
 * Decisões de infraestrutura tomadas no início do projeto (banco de dados, frameworks, ferramentas de messageria);
 * Desenhos baseados em stack tecnológico e não em necessidades de negócio;
 * Dificuldade de mudança de alguma tecnologia;
-* Desrespeito a Pirâmide de Testes (exemplo: mais testes de integração que unitários)    
+* Desrespeito a Pirâmide de Testes (exemplo: mais testes de integração que unitários).
   
 ## Prós:
 * Foco nos casos de Uso de Negócio e não em componentes de infraestrutura e/ou frameworks;
@@ -23,13 +23,15 @@ Na _minha opinião_ Clean Architecture é uma forma de pensar, estruturar e orga
 * Facilidade de Manutenção e de aplicar mudanças;
 * Total separação de responsabilidades (causa uma impressão de que cada coisa em seu devido lugar);
 * Abordagem de teste mais efetiva (respeitando a pirâmede de testes);
-* Independente de Framework, Banco de Dados e componentes de Infraestrutura em Geral; 
+* Independente de Framework, Banco de Dados e componentes de Infraestrutura em Geral.
 
 ## Contras:
 * Mais código escrito e uma aparente repetição de código;
 * Pode levar mais tempo para desenvolver inicialmente (maior custo de desenvolvimento);
-* Curva de aprendizagem e de adaptação; 
-* Pode provocar discussões filosóficas interminavéis (se está quebrando o padrão, até onde abrir exceções para ser mais produtivo, etc)
+* Curva de aprendizagem e de adaptação;
+* Pode provocar discussões filosóficas interminavéis (se está quebrando o padrão, até onde abrir exceções para ser mais produtivo, etc).
+
+Observação: A máxima segue verdadeira: There is no silver bullet! Na minha opnião é preciso avaliar os prós e contras da aplicação desta abordagem e entender como ela pode ajudar (ou não) em cada projeto (como fazemos com qualquer outra tecnologia/metodologia). 
 
 
 ## Fontes
