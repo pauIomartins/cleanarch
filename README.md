@@ -31,8 +31,7 @@ Na _minha opinião_ Clean Architecture é uma forma de pensar, estruturar e orga
 * Curva de aprendizagem e de adaptação;
 * Pode provocar discussões filosóficas interminavéis (se está quebrando o padrão, até onde abrir exceções para ser mais produtivo, etc).
 
-Observação: A máxima segue verdadeira: There is no silver bullet! Na minha opnião é preciso avaliar os prós e contras da aplicação desta abordagem e entender como ela pode ajudar (ou não) em cada projeto (como fazemos com qualquer outra tecnologia/metodologia). 
-
+**Observação** A máxima segue verdadeira _There is no silver bullet!_. Na minha opnião é preciso avaliar os prós e contras da aplicação desta abordagem e entender como ela pode ajudar (ou não) em cada projeto (como fazemos com qualquer outra tecnologia/metodologia). 
 
 ## Fontes
 * Artigo Uncle Bob - https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.
