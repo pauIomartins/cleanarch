@@ -9,7 +9,7 @@ Lab para estudo da idéia de Clean Arch do Uncle Bob.
 
 ## O que é Clean Architecture?
 
-Na _minha opinião_ Clean Architecture é uma forma de pensar, estruturar e organizar uma aplicação de software aplicando fortemente boas práticas de Programação Orientada a Objetos. Práticas como: Escrever código com **Responsabilidade Única**, classes e funções que sejam **Coesas**, possuam **Baixo Nível de Acoplamento** com suas dependencias, aplicam o princípio de **Inversão de Dependência**, naturalmente levam a um desenho arquitetural mais limpo.
+Na _minha opinião_ Clean Architecture é uma forma de pensar, estruturar e organizar uma aplicação de software aplicando fortemente boas práticas de Programação Orientada a Objetos. Práticas como: Escrever código com **Responsabilidade Única**, classes e funções que sejam **Coesas**, possuam **Baixo Nível de Acoplamento** com suas dependências, aplicam o princípio de **Inversão de dependência**, naturalmente levam a um desenho arquitetural mais limpo.
 
 ## Diagrama Uncle Bob
 ![The Clean Architecture](http://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg)
@@ -18,7 +18,7 @@ Na _minha opinião_ Clean Architecture é uma forma de pensar, estruturar e orga
 ![Components](http://i.imgur.com/WkBAATy.png)
 
 ## Problemas comuns onde Clean Arch pode ajudar
-* Decisões de infraestrutura tomadas no início do projeto (banco de dados, frameworks, ferramentas de messageria);
+* Decisões de infraestrutura tomadas no início do projeto (banco de dados, frameworks, ferramentas de mensageria);
 * Desenhos baseados em stack tecnológico e não em necessidades de negócio;
 * Dificuldade de mudança de alguma tecnologia;
 * Desrespeito a Pirâmide de Testes (exemplo: mais testes de integração que unitários).
@@ -28,14 +28,14 @@ Na _minha opinião_ Clean Architecture é uma forma de pensar, estruturar e orga
 * Casos de Uso implementados em um único lugar;
 * Facilidade de Manutenção e de aplicar mudanças;
 * Total separação de responsabilidades (causa uma impressão de que cada coisa em seu devido lugar);
-* Abordagem de teste mais efetiva (respeitando a pirâmede de testes);
+* Abordagem de teste mais efetiva (respeitando a pirâmide de testes);
 * Independente de Framework, Banco de Dados e componentes de Infraestrutura em Geral.
 
 ## Contras:
 * Mais código escrito e uma aparente repetição de código;
 * Pode levar mais tempo para desenvolver inicialmente (maior custo de desenvolvimento);
 * Curva de aprendizagem e de adaptação;
-* Pode provocar discussões filosóficas interminavéis (se está quebrando o padrão, até onde abrir exceções para ser mais produtivo, etc).
+* Pode provocar discussões filosóficas intermináveis (se está quebrando o padrão, até onde abrir exceções para ser mais produtivo, etc).
 
 **Observação** A máxima segue verdadeira _There is no silver bullet!_. Na minha opnião é preciso avaliar os prós e contras da aplicação desta abordagem e entender como ela pode ajudar (ou não) em cada projeto (como fazemos com qualquer outra tecnologia/metodologia). 
 
